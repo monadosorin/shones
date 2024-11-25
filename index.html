@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Awesome!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+        .btn-custom {
+            background-color: red;
+            color: white;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: darkred;
+        }
+        .container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .description {
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 30px;
+            display: none;
+        }
+        .image {
+            display: none;
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .image.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .container, .event-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+        /* Shake animation */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+    75% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Add the shake class */
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-message">
+            <h1>Hey, you're awesome!</h1>
+            <p>Just wanted to remind you how amazing you are!</p>
+        </div>
+        <div>
+            <button class="btn btn-custom" onclick="startRandomEvent()">Click for a surprise!</button>
+        </div>
+        <div id="event-container"></div> <!-- This is where mini-games/events will appear -->
+    </div>
+
+    <!-- Background music (autoplay, loop) -->
+    <audio id="background-music" autoplay loop>
+        <source src="bg.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Function to show an image with particle effect
+        // Function to show a random image from a predefined array of images
+function showImageEvent() {
+    const container = document.getElementById('event-container');
+    container.innerHTML = ''; // Clear previous content
+
+    // List of image filenames in the folder (update this list with your own image names)
+    const imageFolderPath = 'images/'; // Path to the folder containing the images
+    const imageFilenames = [
+    'image1.png', 'image2.png', 'image3.png', 'image4.png', 'image5.png',
+    'image6.png', 'image7.png', 'image8.png', 'image9.png', 'image10.png',
+    'image11.png', 'image12.png', 'image13.png', 'image14.png', 'image15.png',
+    'image16.png', 'image17.png', 'image18.png', 'image19.png', 'image20.png',
+    'image21.png', 'image22.png', 'image23.png', 'image24.png', 'image25.png',
+    'image26.png', 'image27.png', 'image28.png', 'image29.png', 'image30.png',
+    'image31.png'
+];
+
+    // Pick a random image from the list
+    const randomIndex = Math.floor(Math.random() * imageFilenames.length);
+    const randomImage = imageFolderPath + imageFilenames[randomIndex];
+
+    // Create the image element
+    const imageDiv = document.createElement('div');
+    imageDiv.className = 'image show';
+    imageDiv.innerHTML = `<img src="${randomImage}" alt="Random Image" width="300" height="300">`;
+
+    // Append the image to the container
+    container.appendChild(imageDiv);
+    
+}
+
+
+let wrongAttempts = 0;
+
+// Messages to show for each wrong attempt
+const wrongMessages = [
+    'Wrong answer! Try again.',
+    'Nope, try again!',
+    'Wrong again! Keep going!'
+];
+
+function showTrickQuestionQuiz() {
+    const container = document.getElementById('event-container');
+    container.innerHTML = ''; // Clear previous content
+
+    const quizText = document.createElement('div');
+    quizText.innerHTML = `
+        <p>On a scale of one to ten, how much do I value you?</p>
+        <input type="number" id="quiz-answer" placeholder="Enter a number between 1 and 10">
+        <button onclick="checkQuizAnswer()">Submit Answer</button>
+        <p id="quiz-feedback"></p>
+    `;
+    container.appendChild(quizText);
+}
+
+function checkQuizAnswer() {
+    const userAnswer = document.getElementById('quiz-answer').value;
+    const feedback = document.getElementById('quiz-feedback');
+
+    if (wrongAttempts < 3) {
+        // Show the corresponding message for the current wrong attempt
+        feedback.innerHTML = wrongMessages[wrongAttempts];
+        wrongAttempts++;
+    } else {
+        // Show the final message after 3 attempts
+        feedback.innerHTML = 'Haha, sorry! This is a trick question because numbers can\'t describe how much I value you!';
+    }
+}
+
+
+        function showDescriptionEvent() {
+    const container = document.getElementById('event-container');
+    container.innerHTML = ''; // Clear previous content
+
+    // Array of quotes
+    const quotes = [
+        "I really love you",
+        "Hanging out with you makes my day 10 times better",
+        "I get a really happy feeling when i see a notification from ice creams and you",
+        "Every day with you is a gift ",
+        "You're my sunshine on a cloudy day",
+        "I appreciate you more than words can say",
+        "You're amazing just the way you are",
+        "You make my heart so happy",
+        "Thank you for being you",
+        "You're very handsome (ril)"
+    ];
+
+    // Pick a random quote
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomQuote = quotes[randomIndex];
+
+    // Create the description element
+    const descriptionText = document.createElement('div');
+    descriptionText.className = 'description';
+    descriptionText.innerHTML = randomQuote; // Use the random quote
+    descriptionText.style.display = 'block';
+    container.appendChild(descriptionText);
+}
+
+
+        
+        // Function to start the "Bother (Click) the Chizu" game
+function showBotherChizuGame() {
+    const container = document.getElementById('event-container');
+    container.innerHTML = ''; // Clear previous content
+
+    // Create the game description
+    const description = document.createElement('div');
+    description.innerHTML = `
+        <h2>Bother (Click) the Chizu!</h2>
+        <p>Bother (Click) the Chizu 10 times to win!</p>
+    `;
+    container.appendChild(description);
+
+    // Create the chizu image
+    const chizuImage = document.createElement('img');
+    chizuImage.src = 'chizu.png';  // Use your image here
+    chizuImage.alt = 'Chizu';
+    chizuImage.id = 'chizu-image';
+    chizuImage.style.cursor = 'pointer';  // Make it clickable
+    chizuImage.style.width = '150px';  // Set the width of the image
+    chizuImage.style.height = '150px';  // Set the height of the image
+    container.appendChild(chizuImage);
+
+    // Create a text that will appear when you win
+    const winText = document.createElement('p');
+    winText.id = 'win-text';
+    winText.style.display = 'none';  // Hide initially
+    winText.innerHTML = 'Good job bro is mad now (heres your prize: https://id.pinterest.com/randomplum237/reigen-simping-folder/)';
+    container.appendChild(winText);
+
+    // Set up the click counter
+    let clickCount = 0;
+
+    // Sound effect for winning
+    const winSound = new Audio('win.mp3');  // Replace with the correct sound file
+
+    // Add click event listener to the image
+    chizuImage.addEventListener('click', () => {
+        // Add shake effect to the image
+        chizuImage.classList.add('shake');
+        
+        // Remove shake class after animation ends to reset the effect
+        setTimeout(() => {
+            chizuImage.classList.remove('shake');
+        }, 500); // Duration of the shake animation
+
+        // Track the number of clicks
+        clickCount++;
+
+        // Win condition
+        if (clickCount >= 10) {
+            // When clicked 10 times, show the win message and play sound
+            winText.style.display = 'block';
+            winSound.play();
+        }
+    });
+}
+
+
+
+
+
+
+        // Array of all available events
+        const events = [
+            showImageEvent,
+            showTrickQuestionQuiz,
+            showDescriptionEvent,
+            showBotherChizuGame
+        ];
+
+        // Variable to track the current game
+        let currentEvent = null;
+
+        // Function to start a random event
+        function startRandomEvent() {
+            // Remove the current event from the list of available events
+            const availableEvents = events.filter(event => event !== currentEvent);
+
+            // Select a random event from the filtered list
+            const randomIndex = Math.floor(Math.random() * availableEvents.length);
+            const nextEvent = availableEvents[randomIndex];
+
+            // Run the selected event
+            nextEvent();
+
+            // Update the current event
+            currentEvent = nextEvent;
+        }
+    </script>
+</body>
+</html>
